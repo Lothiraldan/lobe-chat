@@ -3,6 +3,7 @@ import { authEnv } from '@/config/auth';
 import { fileEnv } from '@/config/file';
 import { knowledgeEnv } from '@/config/knowledge';
 import { langfuseEnv } from '@/config/langfuse';
+import { opikEnv } from '@/config/opik';
 import { enableNextAuth } from '@/const/auth';
 import { parseSystemAgent } from '@/server/globalConfig/parseSystemAgent';
 import { GlobalServerConfig } from '@/types/serverConfig';
@@ -72,7 +73,7 @@ export const getServerGlobalConfig = async () => {
     oAuthSSOProviders: authEnv.NEXT_AUTH_SSO_PROVIDERS.trim().split(/[,，]/),
     systemAgent: parseSystemAgent(appEnv.SYSTEM_AGENT),
     telemetry: {
-      langfuse: langfuseEnv.ENABLE_LANGFUSE,
+      langfuse: langfuseEnv.ENABLE_LANGFUSE || opikEnv.ENABLE_OPIK,
     },
   };
 

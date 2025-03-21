@@ -10,6 +10,8 @@ import {
   TraceEventRegenerateMessage,
 } from '@/types/trace';
 
+import {LobeChatTrace} from '@/libs/traces/abstraction'
+
 /**
  * trace 事件得分
  */
@@ -23,8 +25,8 @@ export enum EventScore {
 type EventParams<T> = T & TraceEventBasePayload;
 
 export class TraceEventClient {
-  private _trace: LangfuseTraceClient;
-  constructor(client: LangfuseTraceClient) {
+  private _trace: LobeChatTrace;
+  constructor(client: LobeChatTrace) {
     this._trace = client;
   }
 
@@ -38,7 +40,7 @@ export class TraceEventClient {
 
     // score the observation if there is an id
     if (observationId) {
-      this._trace.client.score({ name, observationId, traceId, value });
+      this._trace.score({ name, observationId, traceId, value });
     }
   }
 
