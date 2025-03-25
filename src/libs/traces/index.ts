@@ -71,16 +71,17 @@ export class TraceClient {
   }
 
   createTrace(param: CreateLangfuseTraceBody) {
+    console.log(`createTrace`, param)
     if (this._client) {
       const langfuseTrace = this._client.trace({ ...param })
       return new LangfuseChatTrace(langfuseTrace)
     } else if (this._opik_client) {
       const opikBody = {
-        id: param.id || undefined,
+        ...(param.id ? {id: param.id} : {}),
         name: param.name || "lobe-chat",
-        output: param.output || undefined,
-        startTime: param.timestamp || undefined,
-        input: param.input || undefined,
+        output: (param.output ? {"output": param.output} : undefined),
+        ...(param.timestamp ? {startTime: param.timestamp} : {}),
+        input: (param.input ? {"input": param.input} : undefined),
         threadId: param.sessionId || undefined,
         metadata: param.metadata || undefined,
         tags: param.tags || undefined,

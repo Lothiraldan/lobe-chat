@@ -188,11 +188,19 @@ export class OpikChatSpan extends LobeChatSpan {
     tags?: string[];
     parentObservationId?: string;
   }) {
-    this._span.update(params);
+    const opik_span_data = {
+      input: {"input": params.input},
+      output: {"output": params.output},
+      metadata: params.metadata,
+      tags: params.tags,
+      parentSpanId: params.parentObservationId,
+    }
+    console.log(`Updating span ${this._span.data.id} with params`, opik_span_data);
+    this._span.update(opik_span_data);
   }
 
   end(params: { output?: any }) {
-    this._span.update(params);
+    console.log(`Ending span ${this._span.data.id} with params`, params);
     this._span.end();
   }
 }
@@ -213,11 +221,24 @@ export class OpikGenerationSpan extends LobeGenerationSpan {
     endTime?: Date;
     completionStartTime?: Date;
   }) {
-    this._span.update(params);
+    const opik_span_data = {
+      ...(params.input && {input: {"input": params.input}}),
+      ...(params.output && {output: {"output": params.output}}),
+      metadata: params.metadata,
+      tags: params.tags,
+      endTime: params.endTime,
+      // completionStartTime: params.completionStartTime,
+    }
+    console.log(`Updating span ${this._span.data.id} with params`, opik_span_data);
+    this._span.update(opik_span_data);
   }
 
   end(params: { output?: any }) {
-    this._span.update(params)
+    console.log(`Ending span ${this._span.data.id} with params`, params);
+    const opik_end_data = {
+      ...(params.output && {output: {"output": params.output}}),
+    }
+    this._span.update(opik_end_data)
     this._span.end();
   }
 }
@@ -262,8 +283,8 @@ export class OpikChatTrace extends LobeChatTrace {
     const opik_span_data = {
       type: "general" as "general" | "tool" | "llm",
       name: params.name || "span",
-      input: params.input,
-      output: params.output,
+      input: {"input": params.input},
+      output: {"output":params.output},
       metadata: params.metadata,
       tags: params.tags,
     }
@@ -294,10 +315,12 @@ export class OpikChatTrace extends LobeChatTrace {
     const opik_span_data = {
       type: "llm" as "general" | "tool" | "llm",
       name: params.name || "span",
-      input: params.input,
-      output: params.output,
+      input: {"input": params.input},
+      output: {"output": params.output},
       metadata: params.metadata,
       tags: params.tags,
+      model: params.model,
+      provider: params.metadata?.provider,
       startTime: params.startTime,
       endTime: params.endTime,
     }

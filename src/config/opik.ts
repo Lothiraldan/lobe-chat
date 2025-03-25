@@ -7,8 +7,8 @@ export const getOpikConfig = () => {
     runtimeEnv: {
       ENABLE_OPIK: process.env.ENABLE_OPIK === '1',
       OPIK_API_KEY: process.env.OPIK_API_KEY || '',
-      OPIK_WORKSPACE: process.env.OPIK_WORKSPACE || '',
-      OPIK_PROJECT_NAME: process.env.OPIK_PROJECT_NAME || '',
+      OPIK_WORKSPACE: process.env.OPIK_WORKSPACE || 'Default',
+      OPIK_PROJECT_NAME: process.env.OPIK_PROJECT_NAME || 'Default Project',
       OPIK_URL_OVERRIDE: process.env.OPIK_URL_OVERRIDE || 'https://www.comet.com/opik/api',
     },
 
